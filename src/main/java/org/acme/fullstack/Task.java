@@ -1,26 +1,31 @@
-package org.acme.fullstack.project;
+package org.acme.fullstack;
 
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 import jakarta.persistence.*;
+import org.acme.fullstack.project.Project;
 import org.acme.fullstack.user.User;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.ZonedDateTime;
 
 @Entity
-@Table(
-name = "projects",
-uniqueConstraints = {
-@UniqueConstraint(columnNames = {"name", "user_id"})
-}
-)
-public class Project extends PanacheEntity {
+@Table(name = "tasks")
+public class Task extends PanacheEntity {
 
     @Column(nullable = false)
-    public String name;
+    public String title;
+
+    @Column(length = 1000)
+    public String description;
+
+    public Integer priority;
 
     @ManyToOne(optional = false)
     public User user;
+
+    public ZonedDateTime complete;
+
+    @ManyToOne
+    public Project project;
 
     @CreationTimestamp
     @Column(updatable = false, nullable = false)
@@ -28,5 +33,4 @@ public class Project extends PanacheEntity {
 
     @Version
     public int version;
-
 }
